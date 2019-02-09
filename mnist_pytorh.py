@@ -10,7 +10,7 @@ import torch.optim as optim
 
 
 n_epochs = 10
-batch_size_train = 64
+batch_size_train = 256
 batch_size_test = 1000
 log_interval = 10
 
@@ -75,15 +75,20 @@ use_cuda = torch.cuda.is_available()
 device = torch.device("cuda" if use_cuda else "cpu")
 
 nn = Net()
+print(nn)
 model = Net().to(device)
 
+# Test set: Avg. loss: 0.5815, Accuracy: 8139/10000 (81%)
+# same conditions of the Adam - but worse result.
 # optimizer = optim.SGD(nn.parameters(), lr=learning_rate, momentum=momentum) # Test set: Avg. loss: 0.2529, Accuracy: 9224/10000 (92%)
 
 #------------- optimizer with Adam -----------------------------#
 # Test set: Avg. loss: 0.2290, Accuracy: 9358/10000 (93%) lr=0.01  3 epochs
 # Test set: Avg. loss: 0.1363, Accuracy: 9567/10000 (95%) lr=0.001 3 epochs
-# Test set: Avg. loss: 0.0887, Accuracy: 9725/10000 (97%) lr=0.001 10 epochs
 # Test set: Avg. loss: 0.1294, Accuracy: 9623/10000 (96%) lr=0.005 10 epochs
+
+# Test set: Avg. loss: 0.0496, Accuracy: 9848/10000 (98%) lr=0.001 10 epochs batch_size=64 -- Best
+# Test set: Avg. loss: 0.0622, Accuracy: 9809/10000 (98%) lr=0.001 10 epochs batch_size=256
 optimizer = torch.optim.Adam(nn.parameters(), lr=learning_rate) 
 
 train_losses = []
